@@ -1,0 +1,31 @@
+image: node:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+testing_testing:
+  stage: test
+  script: npm test
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    - echo '//git.xekm.com/api/v4/projects/163/packages/npm/:_authToken=${CI_JOB_TOKEN}'>.npmrc
+    - npm publish
+
